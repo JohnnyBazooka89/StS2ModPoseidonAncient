@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cswo5xedl2cpq"
-path="res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"
+uid="uid://pbmjfy3v0egm"
+path="res://.godot/imported/second_wave.png-214ea2936b529aa3ae170c2407788c8c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://PoseidonAncient/mod_image.png"
-dest_files=["res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"]
+source_file="res://PoseidonAncient/images/relics/outline/second_wave.png"
+dest_files=["res://.godot/imported/second_wave.png-214ea2936b529aa3ae170c2407788c8c.ctex"]
 
 [params]
 

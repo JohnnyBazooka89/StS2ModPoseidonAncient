@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cswo5xedl2cpq"
-path="res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"
+uid="uid://cmlp2qrcfl1xx"
+path="res://.godot/imported/sea_star.png-de54e4f239280f7e21b005eb7139bbcc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://PoseidonAncient/mod_image.png"
-dest_files=["res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"]
+source_file="res://PoseidonAncient/images/relics/sea_star.png"
+dest_files=["res://.godot/imported/sea_star.png-de54e4f239280f7e21b005eb7139bbcc.ctex"]
 
 [params]
 

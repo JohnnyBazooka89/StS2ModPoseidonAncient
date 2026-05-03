@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cswo5xedl2cpq"
-path="res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"
+uid="uid://h761jwtwj8r2"
+path="res://.godot/imported/wave_flourish.png-5425376970251d7676b19db65c6c8e87.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://PoseidonAncient/mod_image.png"
-dest_files=["res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"]
+source_file="res://PoseidonAncient/images/relics/wave_flourish.png"
+dest_files=["res://.godot/imported/wave_flourish.png-5425376970251d7676b19db65c6c8e87.ctex"]
 
 [params]
 

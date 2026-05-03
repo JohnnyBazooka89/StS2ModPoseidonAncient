@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cswo5xedl2cpq"
-path="res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"
+uid="uid://d21ow25p3terd"
+path="res://.godot/imported/hydraulic_might.png-5dd847d6cb1662b6b8257907105d7778.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://PoseidonAncient/mod_image.png"
-dest_files=["res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"]
+source_file="res://PoseidonAncient/images/relics/big/hydraulic_might.png"
+dest_files=["res://.godot/imported/hydraulic_might.png-5dd847d6cb1662b6b8257907105d7778.ctex"]
 
 [params]
 

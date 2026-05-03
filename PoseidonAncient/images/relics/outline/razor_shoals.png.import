@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cswo5xedl2cpq"
-path="res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"
+uid="uid://1afrwi5j5j1v"
+path="res://.godot/imported/razor_shoals.png-8e6900e6435d6af73a045e5afe18a768.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://PoseidonAncient/mod_image.png"
-dest_files=["res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"]
+source_file="res://PoseidonAncient/images/relics/outline/razor_shoals.png"
+dest_files=["res://.godot/imported/razor_shoals.png-8e6900e6435d6af73a045e5afe18a768.ctex"]
 
 [params]
 

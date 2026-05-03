@@ -63,7 +63,7 @@ public static class StringExtensions
         PoseidonAncientMainFile.Logger.Info("Could not find relic image path: " + path);
         return Path.Join(PoseidonAncientMainFile.ResPath, "images", "relics", "outline", "relic.png");
     }
-    
+
     public static string BigRelicImagePath(this string path)
     {
         path = Path.Join(PoseidonAncientMainFile.ResPath, "images", "relics", "big", path);
@@ -76,5 +76,10 @@ public static class StringExtensions
     public static string CharacterUiPath(this string path)
     {
         return Path.Join(PoseidonAncientMainFile.ResPath, "images", "charui", path);
+    }
+
+    public static string AncientImagePath(this string path)
+    {
+        return Path.Join(PoseidonAncientMainFile.ResPath, "images", "ancients", path);
     }
 }

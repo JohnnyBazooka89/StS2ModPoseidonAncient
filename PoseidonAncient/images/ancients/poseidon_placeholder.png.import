@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cswo5xedl2cpq"
-path="res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"
+uid="uid://cs7tv3ev3b0x2"
+path="res://.godot/imported/poseidon_placeholder.png-e8e83665498a6555c330f572eaf8eaa0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://PoseidonAncient/mod_image.png"
-dest_files=["res://.godot/imported/mod_image.png-f4b15536730d70ec3f9b18e30f8d72f2.ctex"]
+source_file="res://PoseidonAncient/images/ancients/poseidon_placeholder.png"
+dest_files=["res://.godot/imported/poseidon_placeholder.png-e8e83665498a6555c330f572eaf8eaa0.ctex"]
 
 [params]
 

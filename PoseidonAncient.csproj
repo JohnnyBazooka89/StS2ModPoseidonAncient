@@ -61,7 +61,10 @@
     <ItemGroup>
         <Folder Include="PoseidonAncient\images\card_portraits\big\"/>
         <Folder Include="PoseidonAncient\images\powers\big\"/>
-        <Folder Include="PoseidonAncient\images\relics\big\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="PoseidonAncientCode\Patches\NAncientEventLayout_SetDialogueLineAndAnimate_Patch.cs.uid"/>
     </ItemGroup>
 
     <Target Name="CheckDependencyPaths">

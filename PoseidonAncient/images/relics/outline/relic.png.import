@@ -3,15 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c3o2gxh5yni8p"
-path="res://.godot/imported/relic.png-c707ae14f351d9c059544ef677585bdf.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://PoseidonAncient/images/relics/outline/relic.png"
-dest_files=["res://.godot/imported/relic.png-c707ae14f351d9c059544ef677585bdf.ctex"]
 
 [params]
 
