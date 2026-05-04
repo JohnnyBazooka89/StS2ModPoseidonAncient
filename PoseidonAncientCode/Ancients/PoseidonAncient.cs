@@ -22,13 +22,22 @@ public class PoseidonAncient : CustomAncientModel
         {
             List<AncientOption> manyAttacksRelicsPool =
             [
-                AncientOption<WaveStrike>(),
+                AncientOption<HydraulicMight>(),
+                //King Tide
+                AncientOption<RazorShoals>(),
+                AncientOption<SlipperySlope>(),
             ];
 
             List<AncientOption> otherRelicsPool =
             [
+                //Buried Treasure
+                AncientOption<FloodGain>(),
+                AncientOption<HighSurf>(),
+                //Sea Star
+                AncientOption<SecondWave>(),
+                //Water Fitness
                 AncientOption<WaveStrike>(),
-                AncientOption<WaveStrike>(),
+                AncientOption<WaveFlourish>()
             ];
 
             return new OptionPools(MakePool(otherRelicsPool.ToArray()), MakePool(manyAttacksRelicsPool.ToArray()));

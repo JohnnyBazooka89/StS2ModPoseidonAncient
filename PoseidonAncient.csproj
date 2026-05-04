@@ -60,7 +60,6 @@
 
     <ItemGroup>
         <Folder Include="PoseidonAncient\images\card_portraits\big\"/>
-        <Folder Include="PoseidonAncient\images\powers\big\"/>
     </ItemGroup>
 
     <ItemGroup>

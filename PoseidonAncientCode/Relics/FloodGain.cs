@@ -1,0 +1,69 @@
+﻿using BaseLib.Utils;
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Relics;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.Models.RelicPools;
+using MegaCrit.Sts2.Core.Rooms;
+using MegaCrit.Sts2.Core.ValueProps;
+
+namespace PoseidonAncient.PoseidonAncientCode.Relics;
+
+[Pool(typeof(EventRelicPool))]
+public class FloodGain : PoseidonAncientRelic
+{
+    private const string DamageThresholdKey = "DamageThreshold";
+    public override RelicRarity Rarity => RelicRarity.Ancient;
+
+    private bool UsedThisTurn { get; set; }
+
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    [
+        new(DamageThresholdKey, 10M),
+        new EnergyVar(1)
+    ];
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+    [
+        HoverTipFactory.ForEnergy(this)
+    ];
+
+    public override async Task AfterDamageGiven(
+        PlayerChoiceContext choiceContext,
+        Creature? dealer,
+        DamageResult result,
+        ValueProp props,
+        Creature target,
+        CardModel? cardSource)
+    {
+        if (dealer != Owner.Creature || !props.IsPoweredAttack() ||
+            result.TotalDamage + result.OverkillDamage < DynamicVars[DamageThresholdKey].BaseValue || UsedThisTurn)
+            return;
+        Flash();
+        await PowerCmd.Apply<EnergyNextTurnPower>(choiceContext, Owner.Creature, DynamicVars.Energy.BaseValue,
+            Owner.Creature, null);
+        UsedThisTurn = true;
+    }
+
+    public override Task BeforeSideTurnStart(
+        PlayerChoiceContext choiceContext,
+        CombatSide side,
+        ICombatState combatState)
+    {
+        if (side != Owner.Creature.Side)
+            return Task.CompletedTask;
+        UsedThisTurn = false;
+        return Task.CompletedTask;
+    }
+
+    public override Task AfterCombatEnd(CombatRoom _)
+    {
+        UsedThisTurn = false;
+        return Task.CompletedTask;
+    }
+}

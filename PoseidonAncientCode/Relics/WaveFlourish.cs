@@ -1,11 +1,10 @@
 ﻿using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.RelicPools;
@@ -15,20 +14,29 @@ using MegaCrit.Sts2.Core.Saves.Runs;
 namespace PoseidonAncient.PoseidonAncientCode.Relics;
 
 [Pool(typeof(EventRelicPool))]
-public class WaveStrike : PoseidonAncientRelic
+public class WaveFlourish : PoseidonAncientRelic
 {
-    private int _attacksPlayed;
+    private int _cardsDrawn;
     private bool _isActivating;
     public override RelicRarity Rarity => RelicRarity.Ancient;
 
     public override string FlashSfx => "event:/sfx/ui/relic_activate_draw";
 
-    public override bool ShowCounter =>
-        (IsActivating || AttacksPlayed < DynamicVars.Cards.IntValue) && CombatManager.Instance.IsInProgress;
+    public override bool ShowCounter => (IsActivating || CardsDrawn < DynamicVars.Cards.IntValue) &&
+                                        CombatManager.Instance.IsInProgress;
 
-    public override int DisplayAmount => !IsActivating ? AttacksPlayed : DynamicVars.Cards.IntValue;
+    public override int DisplayAmount => !IsActivating ? CardsDrawn : DynamicVars.Cards.IntValue;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(3)];
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    [
+        new CardsVar(2),
+        new EnergyVar(1)
+    ];
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+    [
+        HoverTipFactory.ForEnergy(this)
+    ];
 
     private bool IsActivating
     {
@@ -42,13 +50,13 @@ public class WaveStrike : PoseidonAncientRelic
     }
 
     [SavedProperty]
-    public int AttacksPlayed
+    public int CardsDrawn
     {
-        get => _attacksPlayed;
+        get => _cardsDrawn;
         set
         {
             AssertMutable();
-            _attacksPlayed = value;
+            _cardsDrawn = value;
             UpdateDisplay();
         }
     }
@@ -62,37 +70,32 @@ public class WaveStrike : PoseidonAncientRelic
         else
         {
             int intValue = DynamicVars.Cards.IntValue;
-            Status = AttacksPlayed == intValue - 1 ? RelicStatus.Active : RelicStatus.Normal;
+            Status = CardsDrawn == intValue - 1 ? RelicStatus.Active : RelicStatus.Normal;
         }
 
         InvokeDisplayAmountChanged();
     }
 
-    public override Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+    public override async Task AfterCardDrawn(
+        PlayerChoiceContext choiceContext,
+        CardModel card,
+        bool fromHandDraw)
     {
-        if (cardPlay.Card.Owner != Owner || cardPlay.Card.Type != CardType.Attack)
+        if (fromHandDraw || card.Owner != Owner ||
+            card.Owner.Creature.CombatState.CurrentSide != card.Owner.Creature.Side)
         {
-            return Task.CompletedTask;
+            return;
         }
 
-        AttacksPlayed++;
+        CardsDrawn++;
         int intValue = DynamicVars.Cards.IntValue;
-        if (!CombatManager.Instance.IsInProgress || AttacksPlayed != intValue)
-            return Task.CompletedTask;
+        if (!CombatManager.Instance.IsInProgress || CardsDrawn != intValue)
+        {
+            return;
+        }
+
         TaskHelper.RunSafely(DoActivateVisuals());
-        return Task.CompletedTask;
-    }
-
-    public override int ModifyCardPlayCount(CardModel card, Creature? target, int playCount)
-    {
-        int intValue = DynamicVars.Cards.IntValue;
-
-        return !CombatManager.Instance.IsInProgress
-               || AttacksPlayed != intValue - 1
-               || card.Type != CardType.Attack
-               || card.Owner.Creature != Owner.Creature
-            ? playCount
-            : playCount + 1;
+        await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
     }
 
     private async Task DoActivateVisuals()
@@ -110,13 +113,13 @@ public class WaveStrike : PoseidonAncientRelic
     {
         if (side != Owner.Creature.Side)
             return Task.CompletedTask;
-        AttacksPlayed = 0;
+        CardsDrawn = 0;
         return Task.CompletedTask;
     }
 
     public override Task AfterCombatEnd(CombatRoom _)
     {
-        AttacksPlayed = 0;
+        CardsDrawn = 0;
         return Task.CompletedTask;
     }
 }
