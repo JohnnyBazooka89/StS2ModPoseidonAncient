@@ -23,19 +23,19 @@ public class PoseidonAncient : CustomAncientModel
             List<AncientOption> manyAttacksRelicsPool =
             [
                 AncientOption<HydraulicMight>(),
-                //King Tide
+                AncientOption<KingTide>(),
                 AncientOption<RazorShoals>(),
                 AncientOption<SlipperySlope>(),
             ];
 
             List<AncientOption> otherRelicsPool =
             [
-                //Buried Treasure
+                AncientOption<BuriedTreasure>(),
                 AncientOption<FloodGain>(),
                 AncientOption<HighSurf>(),
                 //Sea Star
                 AncientOption<SecondWave>(),
-                //Water Fitness
+                AncientOption<WaterFitness>(),
                 AncientOption<WaveStrike>(),
                 AncientOption<WaveFlourish>()
             ];

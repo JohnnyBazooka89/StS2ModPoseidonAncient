@@ -7,7 +7,7 @@ using MegaCrit.Sts2.Core.Nodes.Events;
 namespace PoseidonAncient.PoseidonAncientCode.Patches;
 
 [HarmonyPatch(typeof(NAncientEventLayout), "SetDialogueLineAndAnimate")]
-public static class AphroditeAncientLayoutPatch
+public static class NAncientEventLayout_SetDialogueLineAndAnimate_Patch
 {
     private const float XOffset = 185f;
 
