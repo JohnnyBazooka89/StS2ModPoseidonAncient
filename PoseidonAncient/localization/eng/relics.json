@@ -17,6 +17,8 @@
   "POSEIDONANCIENT-RAZOR_SHOALS.title": "Razor Shoals",
   "POSEIDONANCIENT-RAZOR_SHOALS.description": "Your Attacks apply [blue]{RuptureToApply}[/blue] [gold]Rupture[/gold] on every hit.",
   "POSEIDONANCIENT-RAZOR_SHOALS.flavor": "\"Even the mortals know the sea is bountiful, yet also capable of deadly force!\"",
+  "POSEIDONANCIENT-SEA_STAR.title": "Sea Star",
+  "POSEIDONANCIENT-SEA_STAR.description": "Whenever you take a combat reward, there is a [blue]{RewardCopyPercentChange}%[/blue] chance for another reward of the same type to appear. Rewards created this way can also trigger this effect.",
   "POSEIDONANCIENT-SEA_STAR.flavor": "\"The untold bounties of the sea are yours! Well, one of them, at least!\"",
   "POSEIDONANCIENT-SECOND_WAVE.title": "Second Wave",
   "POSEIDONANCIENT-SECOND_WAVE.description": "Every [blue]2nd[blue] turn, gain {Energy:energyIcons()} and draw {Cards} additional card.",

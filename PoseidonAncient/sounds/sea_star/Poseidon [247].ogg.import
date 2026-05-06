@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://d0m2xhn4rd0i2"
+path="res://.godot/imported/Poseidon [247].ogg-19eeba88ed88742e1eb6a7a1c2436d9e.oggvorbisstr"
+
+[deps]
+
+source_file="res://PoseidonAncient/sounds/sea_star/Poseidon [247].ogg"
+dest_files=["res://.godot/imported/Poseidon [247].ogg-19eeba88ed88742e1eb6a7a1c2436d9e.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

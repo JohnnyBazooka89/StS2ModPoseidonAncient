@@ -82,4 +82,9 @@ public static class StringExtensions
     {
         return Path.Join(PoseidonAncientMainFile.ResPath, "images", "ancients", path);
     }
+
+    public static string SoundPath(this string path)
+    {
+        return Path.Join(PoseidonAncientMainFile.ResPath, "sounds", path);
+    }
 }
