@@ -6,13 +6,14 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.RelicPools;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Rewards;
 using MegaCrit.Sts2.Core.Nodes.Screens;
 using MegaCrit.Sts2.Core.Nodes.Screens.Overlays;
 using MegaCrit.Sts2.Core.Rewards;
-using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using PoseidonAncient.PoseidonAncientCode.Extensions;
@@ -23,12 +24,14 @@ namespace PoseidonAncient.PoseidonAncientCode.Relics;
 public class SeaStar : PoseidonAncientRelic
 {
     private const string RewardCopyPercentChangeKey = "RewardCopyPercentChange";
+
     private static readonly MethodInfo UpdateScreenStateMethod =
         AccessTools.Method(typeof(NRewardsScreen), "UpdateScreenState");
 
     private static readonly MethodInfo TryEnableProceedButtonMethod =
         AccessTools.Method(typeof(NRewardsScreen), "TryEnableProceedButton");
-    private static readonly List<String> soundPaths =
+
+    private static readonly List<String> SoundPaths =
     [
         "sea_star/Poseidon [247].ogg".SoundPath(),
         "sea_star/Poseidon [248].ogg".SoundPath(),
@@ -51,8 +54,7 @@ public class SeaStar : PoseidonAncientRelic
 
     public override async Task AfterRewardTaken(Player player, Reward reward)
     {
-        Reward? newReward = GetSameTypeReward(reward);
-        if (player != Owner || newReward == null)
+        if (player != Owner)
         {
             return;
         }
@@ -63,13 +65,14 @@ public class SeaStar : PoseidonAncientRelic
             return;
         }
 
-        AbstractRoom? currentRoom = player.RunState.CurrentRoom;
-        if (currentRoom is CombatRoom)
+        Reward? newReward = GetSameTypeReward(reward);
+        if (newReward == null)
         {
-            PlaySound();
-            await newReward.Populate();
-            await AddRewardToCurrentScreen(newReward);
+            return;
         }
+
+        PlaySound();
+        await AddRewardToCurrentScreen(newReward);
     }
 
     private static Reward? GetSameTypeReward(Reward reward)
@@ -119,12 +122,27 @@ public class SeaStar : PoseidonAncientRelic
             );
         }
 
+        if (reward is SpecialCardReward specialCardReward)
+        {
+            CardModel specialCard =
+                AccessTools.FieldRefAccess<SpecialCardReward, CardModel>("_card")(specialCardReward);
+            if (specialCard is LanternKey) // There's no need to duplicate Lantern Key
+            {
+                return null;
+            }
+
+            return new SpecialCardReward(
+                specialCard,
+                specialCardReward.Player
+            );
+        }
+
         return null;
     }
 
     private void PlaySound()
     {
-        String soundPath = soundPaths[Owner.RunState.Rng.Niche.NextInt(0, soundPaths.Count)];
+        String soundPath = SoundPaths[Owner.RunState.Rng.Niche.NextInt(0, SoundPaths.Count)];
 
         if (PoseidonModConfig.DisableSeaStarSoundEffects)
         {

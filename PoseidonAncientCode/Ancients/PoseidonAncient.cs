@@ -33,7 +33,7 @@ public class PoseidonAncient : CustomAncientModel
                 AncientOption<BuriedTreasure>(),
                 AncientOption<FloodGain>(),
                 AncientOption<HighSurf>(),
-                //Sea Star
+                AncientOption<SeaStar>(),
                 AncientOption<SecondWave>(),
                 AncientOption<WaterFitness>(),
                 AncientOption<WaveStrike>(),
