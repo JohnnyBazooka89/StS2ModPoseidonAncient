@@ -20,7 +20,7 @@ public class PoseidonAncient : CustomAncientModel
     {
         get
         {
-            List<AncientOption> manyAttacksRelicsPool =
+            List<AncientOption> buffAttacksRelicsPool =
             [
                 AncientOption<HydraulicMight>(),
                 AncientOption<KingTide>(),
@@ -40,7 +40,7 @@ public class PoseidonAncient : CustomAncientModel
                 AncientOption<WaveFlourish>()
             ];
 
-            return new OptionPools(MakePool(otherRelicsPool.ToArray()), MakePool(manyAttacksRelicsPool.ToArray()));
+            return new OptionPools(MakePool(otherRelicsPool.ToArray()), MakePool(buffAttacksRelicsPool.ToArray()));
         }
     }
 
