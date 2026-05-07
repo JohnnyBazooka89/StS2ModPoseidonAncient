@@ -11,7 +11,7 @@ The mod is available in:
 English and Korean translations would be welcome. Translations for my other mod, Aphrodite, would also be welcome.
 
 ## 📦 Dependencies
-- BaseLib version 3.0.9 or newer.
+- BaseLib version 3.1.0 or newer.
 
 ## ⚙️ Installation
 1. Go to the [Releases](https://github.com/JohnnyBazooka89/StS2ModPoseidonAncient/releases) page on GitHub and download the latest version.
