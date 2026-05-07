@@ -1,46 +1,52 @@
 ﻿using BaseLib.Utils;
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Relics;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.RelicPools;
-using MegaCrit.Sts2.Core.ValueProps;
-using PoseidonAncient.PoseidonAncientCode.Powers;
+using MegaCrit.Sts2.Core.Nodes;
+using MegaCrit.Sts2.Core.Nodes.Vfx;
+using PoseidonAncient.PoseidonAncientCode.Enchantment;
 
 namespace PoseidonAncient.PoseidonAncientCode.Relics;
 
 [Pool(typeof(EventRelicPool))]
 public class RazorShoals : PoseidonAncientRelic
 {
-    private const string RuptureToApplyKey = "RuptureToApply";
+    private const string SplashKey = "Splash";
 
     public override RelicRarity Rarity => RelicRarity.Ancient;
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new(RuptureToApplyKey, 1M)
+        new CardsVar(3),
+        new(SplashKey, 5M)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.FromPower<RupturePower>()
+        ..HoverTipFactory.FromEnchantment<Splash>(DynamicVars[SplashKey].IntValue)
     ];
 
-    public override async Task AfterDamageGiven(
-        PlayerChoiceContext choiceContext,
-        Creature? dealer,
-        DamageResult result,
-        ValueProp props,
-        Creature target,
-        CardModel? cardSource)
+    public override async Task AfterObtained()
     {
-        if (dealer != Owner.Creature || !props.IsPoweredAttack())
-            return;
-        Flash();
-        await PowerCmd.Apply<RupturePower>(choiceContext, target, DynamicVars[RuptureToApplyKey].BaseValue,
-            Owner.Creature, null);
+        CardSelectorPrefs prefs =
+            new CardSelectorPrefs(CardSelectorPrefs.EnchantSelectionPrompt, DynamicVars.Cards.IntValue);
+        foreach (CardModel card in await CardSelectCmd.FromDeckForEnchantment(Owner, ModelDb.Enchantment<Splash>(),
+                     DynamicVars[SplashKey].IntValue,
+                     prefs))
+        {
+            CardCmd.Enchant<Splash>(card, DynamicVars[SplashKey].BaseValue);
+            NCardEnchantVfx child = NCardEnchantVfx.Create(card);
+            if (child != null)
+            {
+                NRun instance = NRun.Instance;
+                if (instance != null)
+                    instance.GlobalUi.CardPreviewContainer.AddChildSafely(child);
+            }
+        }
     }
 }

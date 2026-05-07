@@ -17,6 +17,7 @@ using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using PoseidonAncient.PoseidonAncientCode.Extensions;
+using PoseidonAncient.PoseidonAncientCode.SpireFields;
 
 namespace PoseidonAncient.PoseidonAncientCode.Relics;
 
@@ -65,7 +66,7 @@ public class SeaStar : PoseidonAncientRelic
             return;
         }
 
-        Reward? newReward = GetSameTypeReward(reward);
+        Reward? newReward = GetSameTypeReward(reward, Owner);
         if (newReward == null)
         {
             return;
@@ -75,24 +76,52 @@ public class SeaStar : PoseidonAncientRelic
         await AddRewardToCurrentScreen(newReward);
     }
 
-    private static Reward? GetSameTypeReward(Reward reward)
+    private static Reward? GetSameTypeReward(Reward reward, Player player)
     {
         if (reward is CardReward cardReward)
         {
             var optionsGetter =
                 AccessTools.PropertyGetter(typeof(CardReward), "Options");
 
+            var rerollOptionsGetter =
+                AccessTools.PropertyGetter(typeof(CardReward), "RerollOptions");
+
             var optionCountGetter =
                 AccessTools.PropertyGetter(typeof(CardReward), "OptionCount");
 
-            var options = (CardCreationOptions)optionsGetter.Invoke(cardReward, null);
-            var optionCount = (int)optionCountGetter.Invoke(cardReward, null);
+            var cardsWereManuallySet =
+                AccessTools.FieldRefAccess<CardReward, bool>("_cardsWereManuallySet")(cardReward);
 
-            return new CardReward(
-                options,
-                optionCount,
-                cardReward.Player
-            );
+            if (cardsWereManuallySet)
+            {
+                var options = (CardCreationOptions)optionsGetter.Invoke(cardReward, null)!;
+                var rerollOptions = (CardCreationOptions)rerollOptionsGetter.Invoke(cardReward, null)!;
+
+                var originalCards = PoseidonSpireFields.SeaStarOriginalCards.Get(cardReward) ?? [];
+                var cardsToOffer = originalCards
+                    .Select<CardModel, CardModel>(card =>
+                        cardReward.Player.RunState.CloneCard(card)
+                    )
+                    .ToList();
+
+                return new CardReward(
+                    cardsToOffer,
+                    options.Source,
+                    cardReward.Player,
+                    rerollOptions
+                );
+            }
+            else
+            {
+                var options = (CardCreationOptions)optionsGetter.Invoke(cardReward, null)!;
+                var optionCount = (int)optionCountGetter.Invoke(cardReward, null)!;
+
+                return new CardReward(
+                    options,
+                    optionCount,
+                    cardReward.Player
+                );
+            }
         }
 
         if (reward is CardRemovalReward cardRemovalReward)
@@ -167,7 +196,11 @@ public class SeaStar : PoseidonAncientRelic
 
     private static async Task AddRewardToCurrentScreen(Reward newReward)
     {
-        await newReward.Populate();
+        if (!newReward.IsPopulated)
+        {
+            await newReward.Populate();
+        }
+
         newReward.MarkContentAsSeen();
 
         var screen = NOverlayStack.Instance

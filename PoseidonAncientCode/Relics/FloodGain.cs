@@ -7,7 +7,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Models.RelicPools;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -45,8 +44,7 @@ public class FloodGain : PoseidonAncientRelic
             result.TotalDamage + result.OverkillDamage < DynamicVars[DamageThresholdKey].BaseValue || UsedThisTurn)
             return;
         Flash();
-        await PowerCmd.Apply<EnergyNextTurnPower>(choiceContext, Owner.Creature, DynamicVars.Energy.BaseValue,
-            Owner.Creature, null);
+        await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
         UsedThisTurn = true;
     }
 

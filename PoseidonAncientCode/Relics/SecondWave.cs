@@ -19,7 +19,7 @@ public class SecondWave : PoseidonAncientRelic
     private bool _isActivating;
     private int _turnsSeen;
 
-    public override RelicRarity Rarity => RelicRarity.Common;
+    public override RelicRarity Rarity => RelicRarity.Ancient;
 
     public override bool ShowCounter => true;
 

@@ -1,0 +1,5 @@
+{
+  "POSEIDONANCIENT-SPLASH.title": "Splash",
+  "POSEIDONANCIENT-SPLASH.description": "Apply [blue]{Amount}[/blue] [gold]Rupture[/gold] on every hit.",
+  "POSEIDONANCIENT-SPLASH.extraCardText": "Splash {Amount}."
+}
