@@ -64,7 +64,7 @@ public class SeaStar : PoseidonAncientRelic
         }
 
         int random = Owner.RunState.Rng.Niche.NextInt(0, 100);
-        if (random >= DynamicVars[RewardCopyPercentChangeKey].BaseValue && Owner.Gold < 2000)
+        if (random >= DynamicVars[RewardCopyPercentChangeKey].BaseValue)
         {
             return;
         }
