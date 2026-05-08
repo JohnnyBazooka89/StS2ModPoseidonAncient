@@ -1,13 +1,17 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Reflection;
 using BaseLib.Utils;
 using Godot;
 using HarmonyLib;
+using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.RelicPools;
+using MegaCrit.Sts2.Core.Multiplayer.Game;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Rewards;
 using MegaCrit.Sts2.Core.Nodes.Screens;
@@ -60,7 +64,7 @@ public class SeaStar : PoseidonAncientRelic
         }
 
         int random = Owner.RunState.Rng.Niche.NextInt(0, 100);
-        if (random >= DynamicVars[RewardCopyPercentChangeKey].BaseValue)
+        if (random >= DynamicVars[RewardCopyPercentChangeKey].BaseValue && Owner.Gold < 2000)
         {
             return;
         }
@@ -71,8 +75,22 @@ public class SeaStar : PoseidonAncientRelic
             return;
         }
 
-        PlaySound();
-        await AddRewardToCurrentScreen(newReward);
+        var rewardsSet = FindRewardsSetContaining(player, reward);
+        if (rewardsSet == null)
+            return;
+
+        if (!newReward.IsPopulated)
+        {
+            newReward.Populate();
+        }
+
+        rewardsSet.Rewards.Add(newReward);
+
+        if (LocalContext.IsMe(player))
+        {
+            PlaySound();
+            await AddRewardToCurrentScreen(newReward);
+        }
     }
 
     private static Reward? GetSameTypeReward(Reward reward, Player player)
@@ -91,6 +109,9 @@ public class SeaStar : PoseidonAncientRelic
             var cardsWereManuallySet =
                 AccessTools.FieldRefAccess<CardReward, bool>("_cardsWereManuallySet")(cardReward);
 
+            var synchronizer =
+                AccessTools.FieldRefAccess<CardReward, PlayerChoiceSynchronizer>("_synchronizer")(cardReward);
+
             if (cardsWereManuallySet)
             {
                 var options = (CardCreationOptions)optionsGetter.Invoke(cardReward, null)!;
@@ -107,7 +128,8 @@ public class SeaStar : PoseidonAncientRelic
                     cardsToOffer,
                     options.Source,
                     cardReward.Player,
-                    rerollOptions
+                    rerollOptions,
+                    synchronizer
                 );
             }
             else
@@ -118,7 +140,8 @@ public class SeaStar : PoseidonAncientRelic
                 return new CardReward(
                     options,
                     optionCount,
-                    cardReward.Player
+                    cardReward.Player,
+                    synchronizer
                 );
             }
         }
@@ -190,11 +213,6 @@ public class SeaStar : PoseidonAncientRelic
 
     private static async Task AddRewardToCurrentScreen(Reward newReward)
     {
-        if (!newReward.IsPopulated)
-        {
-            newReward.Populate();
-        }
-
         newReward.MarkContentAsSeen();
 
         var screen = NOverlayStack.Instance
@@ -246,5 +264,38 @@ public class SeaStar : PoseidonAncientRelic
 
         UpdateScreenStateMethod.Invoke(screen, null);
         TryEnableProceedButtonMethod.Invoke(screen, null);
+    }
+
+    private static RewardsSet? FindRewardsSetContaining(Player player, Reward reward)
+    {
+        var synchronizer = RunManager.Instance.RewardsSetSynchronizer;
+        if (synchronizer == null)
+            return null;
+
+        var rewardStatesField =
+            AccessTools.Field(typeof(RewardsSetSynchronizer), "_rewardStates");
+
+        var rewardStates = (IEnumerable)rewardStatesField.GetValue(synchronizer)!;
+
+        foreach (var playerState in rewardStates)
+        {
+            var rewardsStackField =
+                AccessTools.Field(playerState.GetType(), "rewardsStack");
+
+            var rewardsStack = (IEnumerable)rewardsStackField.GetValue(playerState)!;
+
+            foreach (var setState in rewardsStack)
+            {
+                var setField =
+                    AccessTools.Field(setState.GetType(), "set");
+
+                var set = (RewardsSet)setField.GetValue(setState)!;
+
+                if (set.Player == player && set.Rewards.Contains(reward))
+                    return set;
+            }
+        }
+
+        return null;
     }
 }
