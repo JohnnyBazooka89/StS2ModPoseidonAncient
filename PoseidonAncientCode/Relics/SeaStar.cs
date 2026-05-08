@@ -7,7 +7,6 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.RelicPools;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Rewards;
@@ -155,11 +154,6 @@ public class SeaStar : PoseidonAncientRelic
         {
             CardModel specialCard =
                 AccessTools.FieldRefAccess<SpecialCardReward, CardModel>("_card")(specialCardReward);
-            if (specialCard is LanternKey) // There's no need to duplicate Lantern Key
-            {
-                return null;
-            }
-
             return new SpecialCardReward(
                 specialCard,
                 specialCardReward.Player
@@ -198,7 +192,7 @@ public class SeaStar : PoseidonAncientRelic
     {
         if (!newReward.IsPopulated)
         {
-            await newReward.Populate();
+            newReward.Populate();
         }
 
         newReward.MarkContentAsSeen();

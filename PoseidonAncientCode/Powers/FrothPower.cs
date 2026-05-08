@@ -4,7 +4,6 @@ using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace PoseidonAncient.PoseidonAncientCode.Powers;
@@ -13,7 +12,7 @@ public class FrothPower : PoseidonAncientPower
 {
     private const string StacksToTakeDamageKey = "StacksToTakeDamage";
     private const string DamageToTakeKey = "DamageToTake";
-    private const string StrengthToLoseKey = "StrengthToLose";
+    private const string TemporaryStrengthToLoseKey = "TemporaryStrengthToLose";
 
     public override PowerType Type => PowerType.Debuff;
 
@@ -25,7 +24,7 @@ public class FrothPower : PoseidonAncientPower
     [
         new(StacksToTakeDamageKey, 3M),
         new(DamageToTakeKey, 10M),
-        new(StrengthToLoseKey, 1M)
+        new(TemporaryStrengthToLoseKey, 2M)
     ];
 
     protected override object InitInternalData() => new Data();
@@ -47,7 +46,8 @@ public class FrothPower : PoseidonAncientPower
             Flash();
             await CreatureCmd.Damage(choiceContext, Owner, DynamicVars[DamageToTakeKey].BaseValue, ValueProp.Unpowered,
                 Owner);
-            await PowerCmd.Apply<StrengthPower>(choiceContext, Owner, -DynamicVars[StrengthToLoseKey].BaseValue, Owner, null);            
+            await PowerCmd.Apply<SlipperySlopePower>(choiceContext, Owner,
+                DynamicVars[TemporaryStrengthToLoseKey].BaseValue, Owner, null);
 
             data.StacksApplied -= DynamicVars[StacksToTakeDamageKey].IntValue;
             if (data.StacksApplied == 0)

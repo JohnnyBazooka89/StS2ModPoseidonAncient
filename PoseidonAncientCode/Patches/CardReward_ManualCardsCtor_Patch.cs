@@ -1,6 +1,7 @@
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Runs;
@@ -14,7 +15,8 @@ namespace PoseidonAncient.PoseidonAncientCode.Patches;
     typeof(IEnumerable<CardModel>),
     typeof(CardCreationSource),
     typeof(Player),
-    typeof(CardCreationOptions)
+    typeof(CardCreationOptions),
+    typeof(PlayerChoiceSynchronizer)
 )]
 public static class CardReward_ManualCardsCtor_Patch
 {
