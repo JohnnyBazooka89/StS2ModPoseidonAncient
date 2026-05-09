@@ -28,19 +28,23 @@ public class PoseidonAncient : CustomAncientModel
                 AncientOption<SlipperySlope>(),
             ];
 
+            List<AncientOption> energyFocusedRelicsPool =
+            [
+                AncientOption<FloodGain>(),
+                AncientOption<SecondWave>(),
+                AncientOption<WaveFlourish>(),
+                AncientOption<WaveStrike>(),
+            ];
+            
             List<AncientOption> otherRelicsPool =
             [
                 AncientOption<BuriedTreasure>(),
-                AncientOption<FloodGain>(),
                 AncientOption<HighSurf>(),
                 AncientOption<SeaStar>(),
-                AncientOption<SecondWave>(),
                 AncientOption<WaterFitness>(),
-                AncientOption<WaveStrike>(),
-                AncientOption<WaveFlourish>()
             ];
 
-            return new OptionPools(MakePool(otherRelicsPool.ToArray()), MakePool(buffAttacksRelicsPool.ToArray()));
+            return new OptionPools(MakePool(buffAttacksRelicsPool.ToArray()), MakePool(energyFocusedRelicsPool.ToArray()), MakePool(otherRelicsPool.ToArray()));
         }
     }
 
