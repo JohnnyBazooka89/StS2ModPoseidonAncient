@@ -18,12 +18,11 @@ public class WaterFitness : PoseidonAncientRelic, IAfterAnyRelicObtained
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new MaxHpVar(2M),
-        new CalculationBaseVar(0M),
-        new CalculationExtraVar(1M),
-        new CalculatedRelicVar(TotalHpToGainKey).WithMultiplier(static (relic, _) =>
+        new(TotalHpToGainKey + "Base", 0M),
+        new(TotalHpToGainKey + "Extra", 1M),
+        new PoseidonCustomCalculatedVar(TotalHpToGainKey).WithMultiplier(static (relic, _) =>
             (relic.Owner.Relics.Count + 1) * relic.DynamicVars.MaxHp.BaseValue)
     ];
-
 
     public override RelicRarity Rarity => RelicRarity.Ancient;
 
@@ -36,7 +35,9 @@ public class WaterFitness : PoseidonAncientRelic, IAfterAnyRelicObtained
     public override async Task AfterObtained()
     {
         Flash();
+
         await CreatureCmd.GainMaxHp(Owner.Creature,
-            ((CalculatedRelicVar)DynamicVars[TotalHpToGainKey]).Calculate(null) - DynamicVars.MaxHp.BaseValue);
+            ((PoseidonCustomCalculatedVar)DynamicVars[TotalHpToGainKey]).InvokeProtectedCalculateCustom(null) -
+            DynamicVars.MaxHp.BaseValue);
     }
 }

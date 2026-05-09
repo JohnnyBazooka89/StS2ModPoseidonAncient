@@ -35,7 +35,7 @@ public class PoseidonAncient : CustomAncientModel
                 AncientOption<WaveFlourish>(),
                 AncientOption<WaveStrike>(),
             ];
-            
+
             List<AncientOption> otherRelicsPool =
             [
                 AncientOption<BuriedTreasure>(),
@@ -44,7 +44,11 @@ public class PoseidonAncient : CustomAncientModel
                 AncientOption<WaterFitness>(),
             ];
 
-            return new OptionPools(MakePool(buffAttacksRelicsPool.ToArray()), MakePool(energyFocusedRelicsPool.ToArray()), MakePool(otherRelicsPool.ToArray()));
+            return new OptionPools(
+                MakePool(buffAttacksRelicsPool.ToArray()),
+                MakePool(energyFocusedRelicsPool.ToArray()),
+                MakePool(otherRelicsPool.ToArray())
+            );
         }
     }
 
