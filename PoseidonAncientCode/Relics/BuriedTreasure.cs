@@ -43,8 +43,8 @@ public class BuriedTreasure : PoseidonAncientRelic, IHealAmountModifier
     [
         new(MorePercentGoldKey, 50M),
         new(MorePercentHealKey, 50M),
-        new GoldVar(150),
-        new HealVar(15),
+        new GoldVar(100),
+        new HealVar(10),
     ];
 
     public Decimal ModifyHealMultiplicative(Creature creature, Decimal amount)
@@ -80,7 +80,7 @@ public class BuriedTreasure : PoseidonAncientRelic, IHealAmountModifier
 
     public override async Task AfterObtained()
     {
-        await PlayerCmd.GainGold(DynamicVars.Gold.BaseValue * 2M / 3M, Owner);
-        await CreatureCmd.Heal(Owner.Creature, DynamicVars.Heal.BaseValue * 2M / 3M);
+        await PlayerCmd.GainGold(DynamicVars.Gold.BaseValue, Owner);
+        await CreatureCmd.Heal(Owner.Creature, DynamicVars.Heal.BaseValue);
     }
 }

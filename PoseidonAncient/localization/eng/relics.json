@@ -1,6 +1,6 @@
 {
   "POSEIDONANCIENT-BURIED_TREASURE.title": "Buried Treasure",
-  "POSEIDONANCIENT-BURIED_TREASURE.description": "Whenever you gain [gold]Gold[/gold], gain [blue]{MorePercentGold}%[/blue] more. Whenever you heal, heal [blue]{MorePercentHeal}%[/blue] more. Upon pickup, gain [blue]{Gold}[/blue] [gold]Gold[/gold] and heal [blue]{Heal}[/blue] HP (including bonuses).",
+  "POSEIDONANCIENT-BURIED_TREASURE.description": "Whenever you gain [gold]Gold[/gold], gain [blue]{MorePercentGold}%[/blue] more. Whenever you heal, heal [blue]{MorePercentHeal}%[/blue] more. Upon pickup, gain [blue]{Gold}[/blue] [gold]Gold[/gold] and heal [blue]{Heal}[/blue] HP.",
   "POSEIDONANCIENT-BURIED_TREASURE.flavor": "\"Such is the smuggler's life!\"",
   "POSEIDONANCIENT-FLOOD_GAIN.title": "Flood Gain",
   "POSEIDONANCIENT-FLOOD_GAIN.description": "The first time each turn you deal at least [blue]{DamageThreshold}[/blue] Attack damage in a single hit, gain {Energy:energyIcons()}.",
