@@ -28,17 +28,18 @@ public class WaterFitness : PoseidonAncientRelic, IAfterAnyRelicObtained
 
     public async Task AfterAnyRelicObtained(Player player, RelicModel relic)
     {
-        Flash();
-        if (relic != this)
+        if (relic == this)
         {
-            await CreatureCmd.GainMaxHp(Owner.Creature, DynamicVars.MaxHp.BaseValue);
+            return;
         }
+
+        Flash();
+        await CreatureCmd.GainMaxHp(Owner.Creature, DynamicVars.MaxHp.BaseValue);
     }
 
     public override async Task AfterObtained()
     {
         Flash();
-
         await CreatureCmd.GainMaxHp(Owner.Creature,
             ((PoseidonCustomCalculatedVar)DynamicVars[TotalHpToGainKey]).InvokeProtectedCalculateCustom(null) -
             DynamicVars.MaxHp.BaseValue);
