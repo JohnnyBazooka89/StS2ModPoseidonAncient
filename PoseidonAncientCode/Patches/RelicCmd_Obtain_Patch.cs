@@ -13,7 +13,7 @@ public static class RelicCmd_Obtain_Patch
     {
         RelicModel relic = await __result;
 
-        await PoseidonHooks.AfterAnyRelicObtained(player.Creature.CombatState, player, relic);
+        await PoseidonHooks.AfterAnyRelicObtained(player.RunState, player.Creature.CombatState, player, relic);
 
         return relic;
     }
