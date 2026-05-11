@@ -27,9 +27,9 @@ public class HydraulicMight : PoseidonAncientRelic
         Creature? dealer,
         CardModel? cardSource)
     {
-        if (!props.IsPoweredAttack() || cardSource == null || dealer != Owner.Creature)
+        if (!props.IsPoweredAttack() || cardSource == null || (dealer != Owner.Creature && dealer != Owner.Osty))
             return 1M;
 
-        return dealer.CombatState.RoundNumber <= DynamicVars[TurnsKey].BaseValue ? 2M : 1M;
+        return Owner.Creature.CombatState?.RoundNumber <= DynamicVars[TurnsKey].BaseValue ? 2M : 1M;
     }
 }
