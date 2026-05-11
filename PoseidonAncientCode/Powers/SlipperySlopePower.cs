@@ -14,14 +14,9 @@ public class SlipperySlopePower : PoseidonAncientTemporaryPower<FrothPower, Stre
         => (playerChoiceContext, creature, amount, applier, cardSource, _)
             => PowerCmd.Apply<StrengthPower>(playerChoiceContext, creature,
                 amount, applier, cardSource);
-    public override PowerModel InternallyAppliedPower => ModelDb.Power<StrengthPower>();
-
-    public override AbstractModel OriginModel =>
-        ModelDb.Power<FrothPower>();
+    public override PowerType Type => PowerType.Debuff;
 
     protected override bool InvertInternalPowerAmount => true;
-
-    public override PowerType Type => PowerType.Debuff;
 
     public override LocString Description => new("powers", "TEMPORARY_STRENGTH_DOWN.description");
 

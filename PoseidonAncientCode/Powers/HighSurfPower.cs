@@ -14,11 +14,6 @@ public class HighSurfPower : PoseidonAncientTemporaryPower<HighSurf, DexterityPo
         => (playerChoiceContext, creature, amount, applier, cardSource, _)
             => PowerCmd.Apply<DexterityPower>(playerChoiceContext, creature,
                 amount, applier, cardSource);
-    public override PowerModel InternallyAppliedPower => ModelDb.Power<DexterityPower>();
-
-    public override AbstractModel OriginModel =>
-        ModelDb.Relic<HighSurf>();
-
     public override LocString Description => new("powers", "TEMPORARY_DEXTERITY_POWER.description");
 
     protected override string SmartDescriptionLocKey => "TEMPORARY_DEXTERITY_POWER.smartDescription";
