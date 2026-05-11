@@ -10,7 +10,7 @@ namespace PoseidonAncient.PoseidonAncientCode;
 [ModInitializer(nameof(Initialize))]
 public partial class PoseidonAncientMainFile : Node
 {
-    public const string ModId = "PoseidonAncient"; //Used for resource filepath
+    private const string ModId = "PoseidonAncient"; //Used for resource filepath
     public const string ResPath = $"res://{ModId}";
 
     public static Logger Logger { get; } =
