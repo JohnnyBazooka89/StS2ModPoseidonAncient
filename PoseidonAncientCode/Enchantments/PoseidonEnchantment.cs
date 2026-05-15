@@ -2,7 +2,7 @@
 using BaseLib.Extensions;
 using PoseidonAncient.PoseidonAncientCode.Extensions;
 
-namespace PoseidonAncient.PoseidonAncientCode.Relics;
+namespace PoseidonAncient.PoseidonAncientCode.Enchantments;
 
 public abstract class PoseidonEnchantment : CustomEnchantmentModel
 {

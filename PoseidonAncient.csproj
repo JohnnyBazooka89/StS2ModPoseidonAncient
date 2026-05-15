@@ -58,14 +58,6 @@
         <None Include="PoseidonAncient/**"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="PoseidonAncient\images\card_portraits\big\"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="PoseidonAncientCode\Patches\NAncientEventLayout_SetDialogueLineAndAnimate_Patch.cs.uid"/>
-    </ItemGroup>
-
     <Target Name="CheckDependencyPaths">
         <Error
                 Text=" Slay the Spire 2 data not found at path '$(Sts2DataDir)'"

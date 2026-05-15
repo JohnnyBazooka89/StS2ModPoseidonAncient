@@ -6,9 +6,8 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using PoseidonAncient.PoseidonAncientCode.Powers;
-using PoseidonAncient.PoseidonAncientCode.Relics;
 
-namespace PoseidonAncient.PoseidonAncientCode.Enchantment;
+namespace PoseidonAncient.PoseidonAncientCode.Enchantments;
 
 public class Splash : PoseidonEnchantment
 {
