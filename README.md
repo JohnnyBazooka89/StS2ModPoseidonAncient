@@ -2,7 +2,7 @@
 
 ## 📄 Description
 
-This mod introduces a new Ancient, **Poseidon** from the hit game Hades 2, who can appear in Act 2 and offers a selection of Relics that focus on rewarding playing many Attacks, applying Froth/Rupture, gaining Energy, getting more rewards and other things.
+This mod introduces a new Ancient, **Poseidon** from the hit game Hades 2, who can appear in Act 2 and offers a selection of Relics that focus on: rewarding playing many Attacks, applying Froth/Rupture, gaining Energy, getting more rewards and other things.
 
 ## 🌐 Localization
 The mod is available in:
