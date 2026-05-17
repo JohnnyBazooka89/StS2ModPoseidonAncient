@@ -29,7 +29,7 @@ public class Splash : PoseidonEnchantment
         Creature target,
         CardModel? cardSource)
     {
-        if (dealer != Card.Owner.Creature || !props.IsPoweredAttack() || cardSource != Card)
+        if (!props.IsPoweredAttack() || cardSource != Card)
             return;
         await PowerCmd.Apply<RupturePower>(choiceContext, target, Amount,
             Card.Owner.Creature, cardSource);
