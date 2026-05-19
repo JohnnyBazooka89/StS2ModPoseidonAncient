@@ -39,7 +39,7 @@ public class SlipperySlope : PoseidonAncientRelic
         Creature target,
         CardModel? cardSource)
     {
-        if (dealer != Owner.Creature || !props.IsPoweredAttack())
+        if ((dealer != Owner.Creature && dealer != Owner.Osty) || !props.IsPoweredAttack())
             return;
         Flash();
         await PowerCmd.Apply<FrothPower>(choiceContext, target, DynamicVars[FrothToApplyKey].BaseValue,

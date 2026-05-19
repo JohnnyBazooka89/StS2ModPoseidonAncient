@@ -40,7 +40,7 @@ public class FloodGain : PoseidonAncientRelic
         Creature target,
         CardModel? cardSource)
     {
-        if (dealer != Owner.Creature || !props.IsPoweredAttack() ||
+        if ((dealer != Owner.Creature && dealer != Owner.Osty) || !props.IsPoweredAttack() ||
             result.TotalDamage + result.OverkillDamage < DynamicVars[DamageThresholdKey].BaseValue || UsedThisTurn)
             return;
         Flash();

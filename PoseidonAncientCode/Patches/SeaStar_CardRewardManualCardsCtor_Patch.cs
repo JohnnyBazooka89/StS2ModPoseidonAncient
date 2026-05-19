@@ -18,7 +18,7 @@ namespace PoseidonAncient.PoseidonAncientCode.Patches;
     typeof(CardCreationOptions),
     typeof(PlayerChoiceSynchronizer)
 )]
-public static class CardReward_ManualCardsCtor_Patch
+public static class SeaStar_CardRewardManualCardsCtor_Patch
 {
     private static void Postfix(CardReward __instance, Player player)
     {

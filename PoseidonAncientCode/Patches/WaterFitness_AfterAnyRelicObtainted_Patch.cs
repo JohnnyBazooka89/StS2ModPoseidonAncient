@@ -7,7 +7,7 @@ using PoseidonAncient.PoseidonAncientCode.Hooks;
 namespace PoseidonAncient.PoseidonAncientCode.Patches;
 
 [HarmonyPatch(typeof(RelicCmd), nameof(RelicCmd.Obtain), typeof(RelicModel), typeof(Player), typeof(int))]
-public static class RelicCmd_Obtain_Patch
+public static class WaterFitness_AfterAnyRelicObtainted_Patch
 {
     public static async Task<RelicModel> Postfix(Task<RelicModel> __result, Player player)
     {
