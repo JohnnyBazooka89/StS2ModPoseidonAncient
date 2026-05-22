@@ -51,9 +51,10 @@ public class FloodGain : PoseidonAncientRelic
     public override Task BeforeSideTurnStart(
         PlayerChoiceContext choiceContext,
         CombatSide side,
+        IReadOnlyList<Creature> participants,
         ICombatState combatState)
     {
-        if (side != Owner.Creature.Side)
+        if (!participants.Contains(Owner.Creature))
             return Task.CompletedTask;
         UsedThisTurn = false;
         return Task.CompletedTask;

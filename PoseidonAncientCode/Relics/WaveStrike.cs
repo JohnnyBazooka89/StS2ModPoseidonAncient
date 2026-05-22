@@ -106,9 +106,10 @@ public class WaveStrike : PoseidonAncientRelic
     public override Task BeforeSideTurnStart(
         PlayerChoiceContext choiceContext,
         CombatSide side,
+        IReadOnlyList<Creature> participants,
         ICombatState combatState)
     {
-        if (side != Owner.Creature.Side)
+        if (!participants.Contains(Owner.Creature))
             return Task.CompletedTask;
         AttacksPlayed = 0;
         return Task.CompletedTask;

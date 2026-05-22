@@ -1,6 +1,5 @@
 ﻿using BaseLib.Cards.Variables;
 using BaseLib.Utils;
-using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
@@ -42,10 +41,7 @@ public class WaterFitness : PoseidonAncientRelic, IAfterAnyRelicObtained
     {
         Flash();
         await CreatureCmd.GainMaxHp(Owner.Creature,
-            //TODO: This will be changed to call the public CalculateCustom, after it's changed in BaseLib
-            (decimal)AccessTools
-                .Method(typeof(CustomCalculatedVar), "CalculateCustom")
-                .Invoke((CustomCalculatedVar)DynamicVars[TotalHpToGainKey], [null]) -
+            ((CustomCalculatedVar)DynamicVars[TotalHpToGainKey]).CalculateCustom(null) -
             DynamicVars.MaxHp.BaseValue);
     }
 }
