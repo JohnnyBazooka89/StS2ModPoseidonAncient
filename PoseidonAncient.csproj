@@ -41,18 +41,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Remove="PoseidonAncient/**"/>
-        <Compile Remove="materials/**"/>
-        <Compile Remove="shaders/**"/>
-        <Compile Remove="images/**"/>
-        <EmbeddedResource Remove="PoseidonAncient/**"/>
-        <EmbeddedResource Remove="materials/**"/>
-        <EmbeddedResource Remove="shaders/**"/>
-        <EmbeddedResource Remove="images/**"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <None Condition="Exists('Directory.Build.props')" Include="Directory.Build.props"/>
+        <None Include=".gitignore"/>
         <None Include="PoseidonAncient.json"/>
         <None Include="project.godot"/>
         <None Include="PoseidonAncient/**"/>
@@ -68,6 +58,7 @@
         <Message Text="Copying .dll and manifest to mods folder." Importance="high"/>
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/"/>
         <Copy SourceFiles="$(AssemblyName).json" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/"/>
+        <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/"/>
     </Target>
 
     <Target Name="CopyQuickPck" AfterTargets="PackPck" Condition="Exists('$(PckPackerOutputPath)') And '$(PckPackerSkipped)' != 'true'">
@@ -80,6 +71,7 @@
         <Error Text=" Godot path must be set up before publishing; Godot not found at path '$(GodotPath)'. Check Directory.Build.props file."
                Condition="'$(GodotPath)' == '' or !Exists('$(GodotPath)')"/>
     </Target>
+
     <Target Name="GodotPublish" AfterTargets="Publish" Condition="'$(GodotPath)' != '' and Exists('$(GodotPath)') and '$(IsInnerGodotExport)' != 'true'">
         <Message Text="Exporting Godot .pck to mods folder" Importance="high"/>
         <Exec Command="&quot;$(GodotPath)&quot; --headless --export-pack &quot;BasicExport&quot; &quot;$(ModsPath)$(MSBuildProjectName)/$(MSBuildProjectName).pck&quot;"
