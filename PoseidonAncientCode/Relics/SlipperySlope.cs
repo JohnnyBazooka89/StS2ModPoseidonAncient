@@ -20,12 +20,12 @@ public class SlipperySlope : PoseidonAncientRelic
 
     public override RelicRarity Rarity => RelicRarity.Ancient;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    public override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new(FrothToApplyKey, 1M)
     ];
 
-    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+    public override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<FrothPower>(),
         HoverTipFactory.FromPower<StrengthPower>()

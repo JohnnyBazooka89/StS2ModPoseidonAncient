@@ -20,14 +20,14 @@ public class FrothPower : PoseidonAncientPower
 
     public override int DisplayAmount => GetInternalData<Data>().StacksApplied;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    public override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new(StacksToTakeDamageKey, 3M),
         new(DamageToTakeKey, 10M),
         new(TemporaryStrengthToLoseKey, 2M)
     ];
 
-    protected override object InitInternalData() => new Data();
+    public override object InitInternalData() => new Data();
 
     public override async Task AfterPowerAmountChanged(
         PlayerChoiceContext choiceContext,

@@ -20,13 +20,13 @@ public class RazorShoals : PoseidonAncientRelic
 
     public override RelicRarity Rarity => RelicRarity.Ancient;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    public override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new CardsVar(3),
         new(SplashKey, 5M)
     ];
 
-    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+    public override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         ..HoverTipFactory.FromEnchantment<Splash>(DynamicVars[SplashKey].IntValue)
     ];

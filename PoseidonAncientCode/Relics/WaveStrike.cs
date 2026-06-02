@@ -28,7 +28,7 @@ public class WaveStrike : PoseidonAncientRelic
 
     public override int DisplayAmount => !IsActivating ? AttacksPlayed : DynamicVars.Cards.IntValue;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(3)];
+    public override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(3)];
 
     private bool IsActivating
     {

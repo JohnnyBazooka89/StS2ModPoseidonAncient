@@ -1,5 +1,4 @@
 using HarmonyLib;
-using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
@@ -22,13 +21,8 @@ public static class SeaStar_CardRewardManualCardsCtor_Patch
 {
     private static void Postfix(CardReward __instance, Player player)
     {
-        var cards =
-            AccessTools.FieldRefAccess<CardReward, List<CardCreationResult>>("_cards")(__instance);
-
-        var cardsToOffer = cards
-            .Select<CardCreationResult, CardModel>(result =>
-                player.RunState.CloneCard(result.Card)
-            )
+        var cardsToOffer = __instance._cards
+            .Select(result => player.RunState.CloneCard(result.Card))
             .ToList();
 
         PoseidonSpireFields.SeaStarOriginalCards.Set(__instance, cardsToOffer);

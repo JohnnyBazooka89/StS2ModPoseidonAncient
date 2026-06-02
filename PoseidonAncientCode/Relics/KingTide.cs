@@ -19,14 +19,14 @@ public class KingTide : PoseidonAncientRelic
 
     public override RelicRarity Rarity => RelicRarity.Ancient;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    public override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new(NormalCombatStrengthKey, 1M),
         new(EliteCombatStrengthKey, 3M),
         new(BossCombatStrengthKey, 5M)
     ];
 
-    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+    public override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<StrengthPower>()
     ];

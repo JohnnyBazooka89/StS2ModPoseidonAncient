@@ -1,17 +1,12 @@
-﻿using System.Collections;
-using System.Reflection;
-using BaseLib.Utils;
+﻿using BaseLib.Utils;
 using Godot;
-using HarmonyLib;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.RelicPools;
-using MegaCrit.Sts2.Core.Multiplayer.Game;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Rewards;
 using MegaCrit.Sts2.Core.Nodes.Screens;
@@ -29,12 +24,6 @@ public class SeaStar : PoseidonAncientRelic
 {
     private const string RewardCopyPercentChangeKey = "RewardCopyPercentChange";
 
-    private static readonly MethodInfo UpdateScreenStateMethod =
-        AccessTools.Method(typeof(NRewardsScreen), "UpdateScreenState");
-
-    private static readonly MethodInfo TryEnableProceedButtonMethod =
-        AccessTools.Method(typeof(NRewardsScreen), "TryEnableProceedButton");
-
     private static readonly List<String> SoundPaths =
     [
         "sea_star/Poseidon [247].ogg".SoundPath(),
@@ -49,7 +38,7 @@ public class SeaStar : PoseidonAncientRelic
         "sea_star/Poseidon [338].ogg".SoundPath(),
     ];
 
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    public override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new(RewardCopyPercentChangeKey, 30M),
     ];
@@ -69,7 +58,7 @@ public class SeaStar : PoseidonAncientRelic
             return;
         }
 
-        Reward? newReward = GetSameTypeReward(reward, Owner);
+        Reward? newReward = GetSameTypeReward(reward);
         if (newReward == null)
         {
             return;
@@ -89,33 +78,20 @@ public class SeaStar : PoseidonAncientRelic
         if (LocalContext.IsMe(player))
         {
             PlaySound();
-            await AddRewardToCurrentScreen(newReward);
+            AddRewardToCurrentScreen(newReward);
         }
     }
 
-    private static Reward? GetSameTypeReward(Reward reward, Player player)
+    private static Reward? GetSameTypeReward(Reward reward)
     {
         if (reward is CardReward cardReward)
         {
-            var optionsGetter =
-                AccessTools.PropertyGetter(typeof(CardReward), "Options");
-
-            var rerollOptionsGetter =
-                AccessTools.PropertyGetter(typeof(CardReward), "RerollOptions");
-
-            var optionCountGetter =
-                AccessTools.PropertyGetter(typeof(CardReward), "OptionCount");
-
-            var cardsWereManuallySet =
-                AccessTools.FieldRefAccess<CardReward, bool>("_cardsWereManuallySet")(cardReward);
-
-            var synchronizer =
-                AccessTools.FieldRefAccess<CardReward, PlayerChoiceSynchronizer>("_synchronizer")(cardReward);
-
+            var cardsWereManuallySet = cardReward._cardsWereManuallySet;
+            var synchronizer = cardReward._synchronizer;
             if (cardsWereManuallySet)
             {
-                var options = (CardCreationOptions)optionsGetter.Invoke(cardReward, null)!;
-                var rerollOptions = (CardCreationOptions)rerollOptionsGetter.Invoke(cardReward, null)!;
+                var options = cardReward.Options;
+                var rerollOptions = cardReward.RerollOptions;
 
                 var originalCards = PoseidonSpireFields.SeaStarOriginalCards.Get(cardReward) ?? [];
                 var cardsToOffer = originalCards
@@ -134,8 +110,8 @@ public class SeaStar : PoseidonAncientRelic
             }
             else
             {
-                var options = (CardCreationOptions)optionsGetter.Invoke(cardReward, null)!;
-                var optionCount = (int)optionCountGetter.Invoke(cardReward, null)!;
+                var options = cardReward.Options;
+                var optionCount = cardReward.OptionCount;
 
                 return new CardReward(
                     options,
@@ -156,7 +132,7 @@ public class SeaStar : PoseidonAncientRelic
             return new GoldReward(
                 goldReward.Amount,
                 goldReward.Player,
-                AccessTools.FieldRefAccess<GoldReward, bool>("_wasGoldStolenBack")(goldReward)
+                goldReward._wasGoldStolenBack
             );
         }
 
@@ -175,8 +151,7 @@ public class SeaStar : PoseidonAncientRelic
 
         if (reward is SpecialCardReward specialCardReward)
         {
-            CardModel specialCard =
-                AccessTools.FieldRefAccess<SpecialCardReward, CardModel>("_card")(specialCardReward);
+            CardModel specialCard = specialCardReward._card;
             return new SpecialCardReward(
                 specialCard,
                 specialCardReward.Player
@@ -211,7 +186,7 @@ public class SeaStar : PoseidonAncientRelic
         player.Finished += player.QueueFree;
     }
 
-    private static async Task AddRewardToCurrentScreen(Reward newReward)
+    private static void AddRewardToCurrentScreen(Reward newReward)
     {
         newReward.MarkContentAsSeen();
 
@@ -223,14 +198,8 @@ public class SeaStar : PoseidonAncientRelic
         if (screen == null)
             return;
 
-        var rewardButtonsRef =
-            AccessTools.FieldRefAccess<NRewardsScreen, List<Control>>("_rewardButtons");
-
-        var rewardsContainerRef =
-            AccessTools.FieldRefAccess<NRewardsScreen, Control>("_rewardsContainer");
-
-        var rewardButtons = rewardButtonsRef(screen);
-        var rewardsContainer = rewardsContainerRef(screen);
+        var rewardButtons = screen._rewardButtons;
+        var rewardsContainer = screen._rewardsContainer;
 
         Control option;
 
@@ -262,8 +231,8 @@ public class SeaStar : PoseidonAncientRelic
         rewardButtons.Add(option);
         rewardsContainer.AddChildSafely(option);
 
-        UpdateScreenStateMethod.Invoke(screen, null);
-        TryEnableProceedButtonMethod.Invoke(screen, null);
+        screen.UpdateScreenState();
+        screen.TryEnableProceedButton();
     }
 
     private static RewardsSet? FindRewardsSetContaining(Player player, Reward reward)
@@ -272,24 +241,15 @@ public class SeaStar : PoseidonAncientRelic
         if (synchronizer == null)
             return null;
 
-        var rewardStatesField =
-            AccessTools.Field(typeof(RewardsSetSynchronizer), "_rewardStates");
-
-        var rewardStates = (IEnumerable)rewardStatesField.GetValue(synchronizer)!;
+        var rewardStates = synchronizer._rewardStates;
 
         foreach (var playerState in rewardStates)
         {
-            var rewardsStackField =
-                AccessTools.Field(playerState.GetType(), "rewardsStack");
-
-            var rewardsStack = (IEnumerable)rewardsStackField.GetValue(playerState)!;
+            var rewardsStack = playerState.rewardsStack;
 
             foreach (var setState in rewardsStack)
             {
-                var setField =
-                    AccessTools.Field(setState.GetType(), "set");
-
-                var set = (RewardsSet)setField.GetValue(setState)!;
+                var set = setState.set;
 
                 if (set.Player == player && set.Rewards.Contains(reward))
                     return set;

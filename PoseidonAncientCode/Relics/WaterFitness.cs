@@ -15,7 +15,7 @@ public class WaterFitness : PoseidonAncientRelic, IAfterAnyRelicObtained
 {
     private const string TotalHpToGainKey = "TotalHpToGain";
 
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    public override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new MaxHpVar(2M),
         new(TotalHpToGainKey + "Base", 0M),

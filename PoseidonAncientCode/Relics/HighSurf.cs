@@ -19,13 +19,13 @@ public class HighSurf : PoseidonAncientRelic
 
     public override RelicRarity Rarity => RelicRarity.Ancient;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    public override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new PowerVar<DexterityPower>(1M),
         new(DexterityThisTurnKey, 1M)
     ];
 
-    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+    public override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<DexterityPower>()
     ];

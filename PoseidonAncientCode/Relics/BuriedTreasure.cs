@@ -39,7 +39,7 @@ public class BuriedTreasure : PoseidonAncientRelic, IHealAmountModifier
 
     public override RelicRarity Rarity => RelicRarity.Ancient;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
+    public override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new(MorePercentGoldKey, 50M),
         new(MorePercentHealKey, 50M),
