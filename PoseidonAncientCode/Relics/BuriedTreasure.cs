@@ -14,28 +14,6 @@ public class BuriedTreasure : PoseidonAncientRelic, IHealAmountModifier
 {
     private const string MorePercentGoldKey = "MorePercentGold";
     private const string MorePercentHealKey = "MorePercentHeal";
-    private bool _isApplyingBonus;
-    private Decimal _pendingBonusGold;
-
-    private Decimal PendingBonusGold
-    {
-        get => _pendingBonusGold;
-        set
-        {
-            AssertMutable();
-            _pendingBonusGold = value;
-        }
-    }
-
-    private bool IsApplyingBonus
-    {
-        get => _isApplyingBonus;
-        set
-        {
-            AssertMutable();
-            _isApplyingBonus = value;
-        }
-    }
 
     public override RelicRarity Rarity => RelicRarity.Ancient;
 
@@ -58,24 +36,15 @@ public class BuriedTreasure : PoseidonAncientRelic, IHealAmountModifier
         return 1 + DynamicVars[MorePercentHealKey].BaseValue / 100M;
     }
 
-    public override bool ShouldGainGold(Decimal amount, Player player)
+    public override Decimal ModifyGoldGained(Player player, Decimal amount)
     {
-        if (IsApplyingBonus || player != Owner)
-            return true;
-        PendingBonusGold = Math.Floor(amount * (DynamicVars[MorePercentGoldKey].BaseValue / 100M));
-        return true;
+        return player != Owner ? amount : amount * (1 + DynamicVars[MorePercentGoldKey].BaseValue / 100M);
     }
 
-    public override async Task AfterGoldGained(Player player)
+    public override Task AfterModifyingGoldGained(Player player, Decimal amount)
     {
-        if (player != Owner || IsApplyingBonus || PendingBonusGold <= 0M)
-            return;
-        Decimal pendingBonusGold = PendingBonusGold;
-        PendingBonusGold = 0M;
-        IsApplyingBonus = true;
         Flash();
-        await PlayerCmd.GainGold(pendingBonusGold, Owner);
-        IsApplyingBonus = false;
+        return Task.CompletedTask;
     }
 
     public override async Task AfterObtained()
