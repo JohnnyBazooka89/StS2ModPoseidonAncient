@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.RelicPools;
 using PoseidonAncient.PoseidonAncientCode.Hooks;
+using PoseidonAncient.PoseidonAncientCode.Vars;
 
 namespace PoseidonAncient.PoseidonAncientCode.Relics;
 
@@ -20,7 +21,7 @@ public class WaterFitness : PoseidonAncientRelic, IAfterAnyRelicObtained
         new MaxHpVar(2M),
         new(TotalHpToGainKey + "Base", 0M),
         new(TotalHpToGainKey + "Extra", 1M),
-        new CustomCalculatedVar(TotalHpToGainKey).WithMultiplier(static (relic, _) =>
+        new OutsideCombatCalculatedVar(TotalHpToGainKey).WithMultiplier(static (relic, _) =>
             (relic.Owner.Relics.Count + 1) * relic.DynamicVars.MaxHp.BaseValue)
     ];
 
@@ -41,7 +42,7 @@ public class WaterFitness : PoseidonAncientRelic, IAfterAnyRelicObtained
     {
         Flash();
         await CreatureCmd.GainMaxHp(Owner.Creature,
-            ((CustomCalculatedVar)DynamicVars[TotalHpToGainKey]).CalculateCustom(null) -
+            ((OutsideCombatCalculatedVar)DynamicVars[TotalHpToGainKey]).CalculateCustom(null) -
             DynamicVars.MaxHp.BaseValue);
     }
 }
