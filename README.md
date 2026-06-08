@@ -7,8 +7,9 @@ This mod introduces a new Ancient, **Poseidon** from the hit game Hades 2, who c
 ## 🌐 Localization
 The mod is available in:
 - English
+- Korean, thanks to karyulin88
 
-Chinese and Korean translations would be welcome. Translations for my other mod, Aphrodite, would also be welcome.
+Chinese localization would be welcome. Chinese localizations for my other Hades mods would also be welcome.
 
 ## 📦 Dependencies
 - BaseLib version 3.2.0 or newer.
